@@ -27,11 +27,17 @@ version_router: APIRouter = APIRouter(
 )
 
 
+PatentUcid = str
+UcidQuery = Query(
+    ..., regex=r"[A-Z]{2}-[A-Z0-9]{4,}-[A-Z]{1,2}[0-9]{0,1}"
+)
+
+
 # path operations =============================================================
 @version_router.get(
     path="/attachment/list"
 )
-def get_attachment_list(ucid: str = Query(...)) -> JSONResponse:
+def get_attachment_list(ucid: PatentUcid = UcidQuery) -> JSONResponse:
     return JSONResponse(content=get(ucid), status_code=status.HTTP_200_OK)
 
 

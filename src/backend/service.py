@@ -7,7 +7,7 @@ from random import randint
 
 
 # class definitions ===========================================================
-class random_response_renerator:
+class RandomAttachmentGenerator:
 
 
     media_types: Tuple[str, ...] = tuple([
@@ -60,19 +60,21 @@ class random_response_renerator:
     def __next__(self) -> Dict[str, Any]:
         if self._counter <= self._items_to_generate:
             random_media_type: str = self.__sample_media_type__()
-            random_filename: str = self.__construct_filename__(random_media_type)
+            random_filename: str = self.__construct_filename__(
+                random_media_type
+            )
             next_result: Dict[str, Any] = {
                 "media_type": random_media_type,
                 "filename": random_filename
             }
             self._counter += 1
             return next_result
+        
         else:
-            print("number of items generated - {}".format(self._items_to_generate))
             raise StopIteration
     
 
-    pass # end of random_response_renerator
+    pass # end of RandomAttachmentGenerator
 
 
 # method definitions ==========================================================
@@ -82,9 +84,11 @@ def get(ucid: str) -> Dict[str, Any]:
         - `ucid`: a string
     - returns
         - a 'dict' object
+            - to be used as the response content
     """
     attachments: List[Dict[str, Any]] = [
-        item for item in random_response_renerator(randint(5, 10))
+        _attachment_meta_data for _attachment_meta_data in \
+            RandomAttachmentGenerator(randint(5, 10))
     ]
     response: Dict[str, Any] = {
         "ucid": ucid,
