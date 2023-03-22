@@ -29,7 +29,9 @@ version_router: APIRouter = APIRouter(
 
 PatentUcid = str
 UcidQuery = Query(
-    ..., regex=r"[A-Z]{2}-[A-Z0-9]{4,}-[A-Z]{1,2}[0-9]{0,1}"
+    ..., 
+    regex=r"[A-Z]{2}-[A-Z0-9]{4,}-[A-Z]{1,2}[0-9]{0,1}", 
+    example="US-9145048-B2"
 )
 
 

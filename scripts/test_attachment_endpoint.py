@@ -39,9 +39,10 @@ def main() -> None:
         ) as worker_pool:
 
         with Session() as session:
-            for _ in range(0, num_requests):
-                __f = worker_pool.submit(get_attachments, session, sample_ucid)
-                futures.append( __f )
+            futures = {
+                worker_pool.submit(get_attachments, session, sample_ucid)
+                for _ in range(0, num_requests)
+            }
 
     for ftre in futures:
         result = ftre.result()

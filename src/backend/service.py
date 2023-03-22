@@ -57,13 +57,13 @@ class RandomAttachmentGenerator:
         return self
     
 
-    def __next__(self) -> Dict[str, Any]:
+    def __next__(self) -> Dict[str, str]:
         if self._counter <= self._items_to_generate:
             random_media_type: str = self.__sample_media_type__()
             random_filename: str = self.__construct_filename__(
                 random_media_type
             )
-            next_result: Dict[str, Any] = {
+            next_result: Dict[str, str] = {
                 "media_type": random_media_type,
                 "filename": random_filename
             }
@@ -86,7 +86,7 @@ def get(ucid: str) -> Dict[str, Any]:
         - a 'dict' object
             - to be used as the response content
     """
-    attachments: List[Dict[str, Any]] = [
+    attachments: List[Dict[str, str]] = [
         _attachment_meta_data for _attachment_meta_data in \
             RandomAttachmentGenerator(randint(5, 10))
     ]
