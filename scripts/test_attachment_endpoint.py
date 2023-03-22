@@ -14,11 +14,11 @@ from requests import (
 
 
 # method definitions ==========================================================
-def get_attachments(ucid: str) -> List[Dict[str, Any]]:
+def get_attachments(session: Session, ucid: str) -> List[Dict[str, Any]]:
     url: str = "http://localhost:8000/api/v1/attachment/list"
     __params: Dict[str, str] = {"ucid": ucid}
-    with Session() as session:
-        response: Response = session.get(url, params=__params)
+   
+    response: Response = session.get(url, params=__params)
     
     data: Dict[str, Any] = response.json()
     num_items: int = int(data.get("items"))
@@ -30,19 +30,27 @@ def get_attachments(ucid: str) -> List[Dict[str, Any]]:
 def main() -> None:
 
     num_requests: int = 100
+    sample_ucid: str = "US-9145048-B2"
 
+    futures = list()
     with ThreadPoolExecutor(
         max_workers=8, 
         thread_name_prefix="main_thread_pool"
         ) as worker_pool:
-        futures = {
-            worker_pool.submit(get_attachments, "random") \
-                for _ in range(0, num_requests)
-        }
+
+        with Session() as session:
+            for _ in range(0, num_requests):
+                __f = worker_pool.submit(get_attachments, session, sample_ucid)
+                futures.append( __f )
 
     for ftre in futures:
         result = ftre.result()
         print(result)
+
+    # with Session() as session:
+    #     for _ in range(0, num_requests):
+    #         __f = get_attachments(session, sample_ucid)
+    #         print( __f )
 
     return None
 
