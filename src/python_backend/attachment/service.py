@@ -1,4 +1,4 @@
-r""" backend.service module """
+r""" python_backend.attachment.service module """
 
 
 # importing standard modules ==================================================
@@ -78,8 +78,8 @@ class RandomAttachmentGenerator:
 
 
 # method definitions ==========================================================
-def get(ucid: str) -> Dict[str, Any]:
-    r""" Method - Get
+def get_list(ucid: str) -> Dict[str, Any]:
+    r""" Method - Get List
     - arguments:
         - `ucid`: a string
     - returns

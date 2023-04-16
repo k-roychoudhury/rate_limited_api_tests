@@ -1,18 +1,15 @@
-r""" backend.main module """
+r""" python_backend.main module """
 
 
 # importing third-party modules ===============================================
 from fastapi import (
     FastAPI,
-    APIRouter,
-    Query,
-    status
+    APIRouter
 )
-from fastapi.responses import JSONResponse
 
 
 # importing custom modules ====================================================
-from .service import get
+from .attachment.router import attachment_router
 
 
 # module variables ============================================================
@@ -27,22 +24,9 @@ version_router: APIRouter = APIRouter(
 )
 
 
-PatentUcid = str
-UcidQuery = Query(
-    ..., 
-    regex=r"[A-Z]{2}-[A-Z0-9]{4,}-[A-Z]{1,2}[0-9]{0,1}", 
-    example="US-9145048-B2"
-)
-
-
-# path operations =============================================================
-@version_router.get(
-    path="/attachment/list"
-)
-def get_attachment_list(ucid: PatentUcid = UcidQuery) -> JSONResponse:
-    return JSONResponse(content=get(ucid), status_code=status.HTTP_200_OK)
-
-
 # 'app' initializations =======================================================
+version_router.include_router(
+    attachment_router, prefix="/attachment", tags=["attachment"]
+)
 api_router.include_router(version_router)
 app.include_router(api_router)

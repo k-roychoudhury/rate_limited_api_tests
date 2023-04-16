@@ -3,7 +3,10 @@ r""" scripts.test_attachment_endpoint module """
 
 # importing standard modules ==================================================
 from typing import List, Dict, Any
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import (
+    ThreadPoolExecutor, 
+    as_completed
+)
 
 
 # importing third-party modules ===============================================
@@ -44,7 +47,7 @@ def main() -> None:
                 for _ in range(0, num_requests)
             }
 
-    for ftre in futures:
+    for ftre in as_completed(futures):
         result = ftre.result()
         print(result)
 
